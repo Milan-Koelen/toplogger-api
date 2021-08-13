@@ -1,0 +1,20 @@
+{
+  "name": "toplogger-api",
+  "version": "1.0.0",
+  "description": "API TOPLOGGER",
+  "main": "index.js",
+  "scripts": {
+    "start": "env-cmd -f .env node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Milan en Nick",
+  "license": "ISC",
+  "dependencies": {
+    "agenda": "^4.2.1",
+    "env-cmd": "^10.1.0",
+    "agendash": "^2.1.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.13.7",
+    "node-fetch": "^2.6.1"
+  }
+}
