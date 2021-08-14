@@ -29,20 +29,16 @@ const fetchGymLeaderboard = async job => {
 
 const fetchUserAccends = async job => {
   console.log("Update Accends");
-  const climbers = await tlProfile.find(
-    { Nick, Willem, Unknown, Charlotte, Stijn },
-    null,
-    { limit: 10 }
-  );
+  const climbers = await tlProfile.find({}, null, { limit: 10 });
   // console.log(climbers);
   for (let idx in climbers) {
     const climber = climbers[idx];
     console.log(climber.Name);
     const id = climber.TL_UID;
     const url =
-      'https://api.toplogger.nu/v1/ascends.json?json_params=%7B%22filters%22:%7B%22used%22:true,%22user%22:%7B%22uid":' +
+      'https://api.toplogger.nu/v1/ascends.json?json_params=%7B"filters":%7B"used":true,"user":%7B"uid":' +
       id +
-      "%20%7D,%22climb%22:%7B%22gym_id%22:6%7D%7D%7D";
+      '%20%7D,"climb":%7B"gym_id:6%7D%7D%7D';
     const accends = await apiHelper.get(url);
     await tlProfile.findOneAndUpdate(
       { TL_UID: id },
