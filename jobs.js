@@ -1,6 +1,6 @@
 const apiHelper = require("./apiHelper");
 
-const { User } = require("./models");
+const tlProfile = require("./models/tlProfile");
 
 const fetchGymLeaderboard = async job => {
   const url =
@@ -11,18 +11,19 @@ const fetchGymLeaderboard = async job => {
   for (let idx in data) {
     const climber = data[idx];
     console.log("updating", climber.full_name);
-    await User.findOneAndUpdate(
+    await tlProfile.findOneAndUpdate(
       { TL_ID: climber.id },
       {
         TL_ID: climber.id,
         Name: climber.full_name,
+        Gender: climber.gender,
         ProfilePictureURL: climber.avatar,
         Grade: Number.parseFloat(climber.score),
       },
       { upsert: true }
     );
   }
-
+  console.log("Update done");
   // console.log(data);
 
   // console.log("fetchGymLeaderboard", data.length);
