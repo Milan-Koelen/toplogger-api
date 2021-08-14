@@ -5,10 +5,11 @@ const Schema = mongoose.Schema;
 const tlPofileSchema = new Schema({
   Name: String,
   TL_ID: Number,
+  TL_UID: Number,
   Gender: String,
   ProfilePictureURL: String,
   Grade: Number,
-  // Accends: Array,
+  Accends: Array,
   // KnownGyms: Array,
 });
 

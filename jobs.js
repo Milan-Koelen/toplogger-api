@@ -15,6 +15,7 @@ const fetchGymLeaderboard = async job => {
       { TL_ID: climber.id },
       {
         TL_ID: climber.id,
+        TL_UID: climber.uid,
         Name: climber.full_name,
         Gender: climber.gender,
         ProfilePictureURL: climber.avatar,
@@ -23,21 +24,42 @@ const fetchGymLeaderboard = async job => {
       { upsert: true }
     );
   }
-  console.log("Update done");
-  // console.log(data);
-
-  // console.log("fetchGymLeaderboard", data.length);
+  console.log("Update completed");
 };
 
+const fetchUserAccends = async job => {
+  console.log("Update Accends");
+  const climbers = await tlProfile.find(
+    { Nick, Willem, Unknown, Charlotte, Stijn },
+    null,
+    { limit: 10 }
+  );
+  // console.log(climbers);
+  for (let idx in climbers) {
+    const climber = climbers[idx];
+    console.log(climber.Name);
+    const id = climber.TL_UID;
+    const url =
+      'https://api.toplogger.nu/v1/ascends.json?json_params=%7B%22filters%22:%7B%22used%22:true,%22user%22:%7B%22uid":' +
+      id +
+      "%20%7D,%22climb%22:%7B%22gym_id%22:6%7D%7D%7D";
+    const accends = await apiHelper.get(url);
+    await tlProfile.findOneAndUpdate(
+      { TL_UID: id },
+      {
+        Accends: accends,
+      },
+      { upsert: true }
+    );
+  }
+};
 // Init agenda and register jobs
 const init = async agenda => {
   await agenda.start();
   agenda.define("fetchGymLeaderboard", fetchGymLeaderboard);
-  await agenda.every("2 minutes", "fetchGymLeaderboard");
-  //   agenda.define("run job 2", job2);
-  //   await agenda.every("7 days", "run job 2");
-  //   agenda.define("run job 3", job3);
-  //   await agenda.every("30 minutes", "run job 3");
+  agenda.define("fetchUserAccends", fetchUserAccends);
+  await agenda.every("30 minutes", "fetchUserAccends");
+  await agenda.every("120 minutes", "fetchGymLeaderboard");
 };
 
 module.exports = {
