@@ -10,6 +10,9 @@ module.exports = app => {
   app.post("/signup", Authentication.signup);
 
   app.get("/", requireAuth, (req, res, next) => {
-    res.send({ status_koe: "gemolken" });
+    res.send({
+      status_koe: "gemolken",
+      friends: ["karel pietjes", "barry balzak"],
+    });
   });
 };
