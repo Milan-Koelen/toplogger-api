@@ -18,6 +18,7 @@ module.exports = app => {
     const username = {
       Name: {
         $regex: req.query.name,
+        $options: "i",
       },
     };
     console.log(req.query.name);
