@@ -12,6 +12,28 @@ module.exports = app => {
   app.post("/signin", requireSignin, Authentication.signin);
   app.post("/signup", Authentication.signup);
 
+  app.post("/search", async (req, res, next) => {
+    console.log("Searching"); //CONSOLE LOG Searching
+    console.log(req); //consolelog request
+    const username = {
+      Name: {
+        $regex: req.query.name,
+      },
+    };
+    console.log(req.query.name);
+    console.log(username);
+
+    const filteredUsers = await tlProfile.find(username, {
+      Grade: 1,
+      Name: 1,
+      ProfilePictureURL: 1,
+    });
+    console.log(filteredUsers);
+
+    res.send(filteredUsers);
+    console.log("search done");
+  });
+
   app.get("/", requireAuth, async (req, res, next) => {
     const data = await User.findOne(req.body.email);
     console.log(req.user);
@@ -24,11 +46,14 @@ module.exports = app => {
     //   req.user.save();
     // });
 
-    res.send({
-      status_koe: "gemolken",
-      following: req.user.following,
-      name: req.user.name,
-      grade: req.user.TL_Grade,
-    });
+    res.send(
+      {
+        status_koe: "gemolken",
+        following: req.user.following,
+        name: req.user.name,
+        grade: req.user.TL_Grade,
+      },
+      filteredUsers
+    );
   });
 };

@@ -10,7 +10,7 @@ const fetchGymLeaderboard = async job => {
 
   for (let idx in data) {
     const climber = data[idx];
-    console.log("updating", climber.full_name);
+    console.log("updating users", climber.full_name);
     await tlProfile.findOneAndUpdate(
       { TL_ID: climber.id },
       {
@@ -48,6 +48,7 @@ const fetchUserAccends = async job => {
       { upsert: true }
     );
   }
+  console.log("Accends updated");
 };
 // Init agenda and register jobs
 const init = async agenda => {
