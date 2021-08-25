@@ -4,9 +4,14 @@ const bcrypt = require("bcrypt-nodejs");
 
 // define our model
 const userSchema = new Schema({
-  email: { type: String, unique: true, lowercase: true },
+  email: { type: String, unique: true, lowercase: true, required: true },
   password: String,
   name: String,
+  following: [
+    { type: mongoose.Types.ObjectId, ref: "tlProfile", unique: true },
+  ],
+  TL_UID: Number,
+  TL_Grade: Number,
 });
 
 // on save hook, encrypt password

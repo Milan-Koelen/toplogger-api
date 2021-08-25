@@ -6,6 +6,7 @@ const requireAuth = passport.authenticate("jwt", { session: false });
 const requireSignin = passport.authenticate("local", { session: false });
 
 const User = require("./models/user");
+const tlProfile = require("./models/tlProfile");
 
 module.exports = app => {
   app.post("/signin", requireSignin, Authentication.signin);
@@ -13,12 +14,21 @@ module.exports = app => {
 
   app.get("/", requireAuth, async (req, res, next) => {
     const data = await User.findOne(req.body.email);
-    console.log(data);
+    console.log(req.user);
+
+    // tlProfile.findById("6117cc189515bb98cab8cc84", (err, profile) => {
+    //   tlProfile.findByIdAndUpdate(req.user._id, {
+    //     $push: { following: profile._id },
+    //   });
+    //   // req.user.following.push(profile);
+    //   req.user.save();
+    // });
 
     res.send({
       status_koe: "gemolken",
-      friends: ["karel pietjes", "barry balzak"],
-      name: data.name,
+      following: req.user.following,
+      name: req.user.name,
+      grade: req.user.TL_Grade,
     });
   });
 };

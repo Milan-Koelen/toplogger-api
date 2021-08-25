@@ -53,7 +53,8 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
   // see if the user id in the payload exits in our database
   // if it does, call 'done' with that
   // otherwise, call 'done' without a user object
-  User.find({ id: payload.sub }, (err, user) => {
+  // User.find({ _id: payload.sub }, (err, user) => {
+  User.findById(payload.sub, (err, user) => {
     if (err) {
       return done(err, false);
     }

@@ -22,7 +22,6 @@ exports.signin = function (req, res, next) {
 exports.signup = function (req, res, next) {
   const email = req.body.email;
   const password = req.body.password;
-  const name = req.body.name;
 
   if (!email || !password) {
     return res
@@ -39,11 +38,11 @@ exports.signup = function (req, res, next) {
     // If a user with email does exist, return an error
     if (existingUser) {
       return res.status(422).send({ error: "Email is in use" });
+      console.log("Email is in use");
     }
 
     // If a user with email does NOT exist, create and save user record
     const user = new User({
-      name: name,
       email: email,
       password: password,
     });
@@ -54,7 +53,7 @@ exports.signup = function (req, res, next) {
       }
 
       // Respond to request indicating the user was created
-      res.json({ token: tokenForUser(user), name: user.user.name });
+      res.json({ token: tokenForUser(user) });
     });
   });
 };

@@ -29,7 +29,7 @@ const fetchGymLeaderboard = async job => {
 
 const fetchUserAccends = async job => {
   console.log("Update Accends");
-  const climbers = await tlProfile.find({}, null, { limit: 10 });
+  const climbers = await tlProfile.find({}, null);
   // console.log(climbers);
   for (let idx in climbers) {
     const climber = climbers[idx];
