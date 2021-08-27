@@ -37,19 +37,23 @@ module.exports = app => {
   });
 
   app.get("/user", async (req, res, next) => {
-    console.log(req.query.name);
-    console.log(username);
+    console.log(req);
+    console.log("user selected");
 
-    const filteredUsers = await tlProfile.find(username, {
+    const TL_ID = req.query;
+    console.log(TL_ID);
+
+    const User = await tlProfile.findOne(TL_ID, {
       Grade: 1,
       Name: 1,
       ProfilePictureURL: 1,
       TL_ID: 1,
+      Accends: 1,
     });
-    console.log(filteredUsers);
+    console.log(User);
 
-    res.send(filteredUsers);
-    console.log("search done");
+    res.send(User);
+    console.log("user requested");
   });
 
   app.get("/", requireAuth, async (req, res, next) => {
