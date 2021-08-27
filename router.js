@@ -43,16 +43,16 @@ module.exports = app => {
     const TL_ID = req.query;
     console.log(TL_ID);
 
-    const User = await tlProfile.findOne(TL_ID, {
+    const selectedUser = await tlProfile.findOne(TL_ID, {
       Grade: 1,
       Name: 1,
       ProfilePictureURL: 1,
       TL_ID: 1,
       Accends: 1,
     });
-    console.log(User);
+    console.log(selectedUser);
 
-    res.send(User);
+    res.send(selectedUser);
     console.log("user requested");
   });
 
@@ -68,14 +68,11 @@ module.exports = app => {
     //   req.user.save();
     // });
 
-    res.send(
-      {
-        status_koe: "gemolken",
-        following: req.user.following,
-        name: req.user.name,
-        grade: req.user.TL_Grade,
-      },
-      filteredUsers
-    );
+    res.send({
+      status_koe: "gemolken",
+      following: req.user.following,
+      name: req.user.name,
+      grade: req.user.TL_Grade,
+    });
   });
 };
