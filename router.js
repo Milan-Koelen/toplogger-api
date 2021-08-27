@@ -12,7 +12,7 @@ module.exports = app => {
   app.post("/signin", requireSignin, Authentication.signin);
   app.post("/signup", Authentication.signup);
 
-  app.post("/search", async (req, res, next) => {
+  app.get("/search", async (req, res, next) => {
     console.log("Searching"); //CONSOLE LOG Searching
     console.log(req); //consolelog request
     const username = {
@@ -28,6 +28,23 @@ module.exports = app => {
       Grade: 1,
       Name: 1,
       ProfilePictureURL: 1,
+      TL_ID: 1,
+    });
+    console.log(filteredUsers);
+
+    res.send(filteredUsers);
+    console.log("search done");
+  });
+
+  app.get("/user", async (req, res, next) => {
+    console.log(req.query.name);
+    console.log(username);
+
+    const filteredUsers = await tlProfile.find(username, {
+      Grade: 1,
+      Name: 1,
+      ProfilePictureURL: 1,
+      TL_ID: 1,
     });
     console.log(filteredUsers);
 
