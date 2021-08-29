@@ -18,3 +18,5 @@ https://api.toplogger.nu/v1/gyms.json
 
 List of all users
 https://api.toplogger.nu/v1/users.json
+
+ekkes action
