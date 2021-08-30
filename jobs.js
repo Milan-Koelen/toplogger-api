@@ -33,7 +33,7 @@ const fetchUserAccends = async job => {
   // console.log(climbers);
   for (let idx in climbers) {
     const climber = climbers[idx];
-    console.log(climber.Name);
+    // console.log(climber.Name);
     const id = climber.TL_UID;
     const url =
       'https://api.toplogger.nu/v1/ascends.json?json_params={"filters":{"used":true,"user":{"uid":' +

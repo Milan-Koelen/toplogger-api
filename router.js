@@ -7,6 +7,7 @@ const requireSignin = passport.authenticate("local", { session: false });
 
 const User = require("./models/user");
 const tlProfile = require("./models/tlProfile");
+const { populate } = require("./models/user");
 
 module.exports = app => {
   app.post("/signin", requireSignin, Authentication.signin);
@@ -36,11 +37,10 @@ module.exports = app => {
     console.log("search done");
   });
 
-  app.get("/user", async (req, res, next) => {
-    console.log(req);
+  app.get("/user/:TL_ID", async (req, res, next) => {
     console.log("user selected");
-
-    const TL_ID = req.query;
+    console.log(req.params);
+    const TL_ID = req.params;
     console.log(TL_ID);
 
     const selectedUser = await tlProfile.findOne(TL_ID, {
@@ -57,8 +57,9 @@ module.exports = app => {
   });
 
   app.get("/", requireAuth, async (req, res, next) => {
-    const data = await User.findOne(req.body.email);
-    console.log(req.user);
+    const data = await User.findOne(req.body.email).populate("following");
+    // console.log(req.user);
+    console.log(data);
 
     // tlProfile.findById("6117cc189515bb98cab8cc84", (err, profile) => {
     //   tlProfile.findByIdAndUpdate(req.user._id, {
@@ -70,7 +71,7 @@ module.exports = app => {
 
     res.send({
       status_koe: "gemolken",
-      following: req.user.following,
+      following: data.following,
       name: req.user.name,
       grade: req.user.TL_Grade,
     });
