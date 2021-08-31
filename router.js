@@ -39,7 +39,6 @@ module.exports = app => {
 
   app.get("/user/:TL_ID", async (req, res, next) => {
     console.log("user selected");
-    console.log(req.params);
     const TL_ID = req.params;
     console.log(TL_ID);
 
@@ -56,6 +55,18 @@ module.exports = app => {
     console.log("user requested");
   });
 
+  app.get("/accends/:TL_ID", async (req, res, next) => {
+    console.log("user accends");
+    const TL_ID = req.params;
+    console.log(TL_ID);
+
+    const selectedUser = await tlProfile.findOne(TL_ID, {});
+    console.log(selectedUser);
+    console.log(selectedUser.Accends);
+
+    res.send(selectedUser);
+    // console.log("user requested");
+  });
   app.get("/", requireAuth, async (req, res, next) => {
     const data = await User.findOne(req.body.email).populate("following");
     // console.log(req.user);
