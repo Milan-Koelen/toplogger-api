@@ -36,9 +36,10 @@ const fetchUserAccends = async job => {
     // console.log(climber.Name);
     const id = climber.TL_UID;
     const url =
-      'https://api.toplogger.nu/v1/ascends.json?json_params={"filters":{"used":true,"user":{"uid":' +
+      "https://api.toplogger.nu/v1/ascends.json?json_params={%22filters%22:{%22used%22:true,%22user%22:{%22uid%22:" +
       id +
-      '%20},"climb":}"gym_id:6}}}';
+      "},%22climb%22:{%22gym_id%22:6}}}";
+
     const accends = await apiHelper.get(url);
     await tlProfile.findOneAndUpdate(
       { TL_UID: id },
