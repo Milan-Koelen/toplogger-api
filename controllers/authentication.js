@@ -43,10 +43,15 @@ exports.signup = function (req, res, next) {
     }
 
     // If a user with email does NOT exist, create and save user record
-    const user = new User({
-      email: email,
-      password: password,
-    });
+    const user = new User(
+      {
+        email: email,
+        password: password,
+        unique: true,
+        sparse: true,
+      },
+      { following: [], sparse: true }
+    );
     console.log("New user account created " + user.email);
 
     user.save(function (err) {
