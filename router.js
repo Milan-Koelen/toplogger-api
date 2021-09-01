@@ -91,7 +91,7 @@ module.exports = app => {
     // console.log("user requested");
   });
   app.get("/", requireAuth, async (req, res, next) => {
-    const data = await User.findOne(req.body.email).populate("following");
+    let data = await User.findById(req.user._id).populate("following").exec();
 
     // console.log(data);
 
@@ -107,9 +107,9 @@ module.exports = app => {
     res.send({
       status_koe: "gemolken",
       following: data.following,
-      name: req.user.name,
-      grade: req.user.TL_Grade,
-      TL_UID: req.user.TL_UID,
+      name: data.name,
+      grade: data.TL_Grade,
+      TL_UID: data.TL_UID,
     });
   });
 };
