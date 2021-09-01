@@ -11,12 +11,19 @@ const bodyParser = require("body-parser");
 const Agenda = require("agenda");
 const Agendash = require("agendash");
 
+const errorhandler = require("./errorhandler");
+
 const app = express();
 const port = process.env.PORT;
 const AGENDA_DB = process.env.AGENDA_DB;
 const TOPLOGGER_DB = process.env.TOPLOGGER_DB;
+app.use(errorhandler);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// if (process.env.NODE_ENV === "development") {
+// only use in development
+// }
 
 const jobs = require("./jobs");
 const router = require("./router");

@@ -13,7 +13,10 @@ const userSchema = new Schema({
   },
   password: String,
   name: String,
-  following: [{ type: mongoose.Types.ObjectId, ref: "tlProfile" }],
+  following: {
+    type: [{ type: mongoose.Types.ObjectId, ref: "tlProfile" }],
+    default: [],
+  },
   TL_UID: Number,
   TL_Grade: Number,
 });

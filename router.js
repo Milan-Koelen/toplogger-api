@@ -13,8 +13,8 @@ module.exports = app => {
   app.post("/signin", requireSignin, Authentication.signin);
   app.post("/signup", Authentication.signup);
 
-  app.post("/follow", async (req, res, next) => {
-    const user = req.body.user.token;
+  app.post("/follow", requireSignin, async (req, res, next) => {
+    const user = req.body.user;
     // console.log(req);
     console.log("user: " + user);
     const follow = req.body.follow;
