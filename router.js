@@ -13,6 +13,24 @@ module.exports = app => {
   app.post("/signin", requireSignin, Authentication.signin);
   app.post("/signup", Authentication.signup);
 
+  app.post("/follow", async (req, res, next) => {
+    const user = req.body.user.token;
+    // console.log(req);
+    console.log("user: " + user);
+    const follow = req.body.follow;
+    console.log("follow: " + follow);
+
+    tlProfile.findById(user, (err, follow) => {
+      console.log(user);
+      User.findByIdAndUpdate(user, {
+        $addToSet: { following: follow },
+      });
+      // req.user.following.push(profile);
+      req.user.save();
+      res.send(done);
+    });
+  });
+
   app.get("/search", async (req, res, next) => {
     console.log("Searching"); //CONSOLE LOG Searching
     console.log(req); //consolelog request
