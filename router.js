@@ -13,21 +13,25 @@ module.exports = app => {
   app.post("/signin", requireSignin, Authentication.signin);
   app.post("/signup", Authentication.signup);
 
-  app.post("/follow", requireSignin, async (req, res, next) => {
-    const user = req.body.user;
-    // console.log(req);
-    console.log("user: " + user);
-    const follow = req.body.follow;
-    console.log("follow: " + follow);
+  app.post("/follow", requireAuth, async (req, res, next) => {
+    const user = req.user;
+    console.log("user: " + user.email);
+    const follow_id = req.body.follow;
+    console.log("follow_id: " + follow_id);
 
-    tlProfile.findById(user, (err, follow) => {
-      console.log(user);
-      User.findByIdAndUpdate(user, {
-        $addToSet: { following: follow },
-      });
-      // req.user.following.push(profile);
-      req.user.save();
-      res.send(done);
+    tlProfile.findById(follow_id, (err, follow) => {
+      User.findByIdAndUpdate(
+        user._id,
+        {
+          $addToSet: { following: follow._id },
+        },
+        {},
+        (err, doc) => {
+          if (err) throw err;
+
+          res.send(doc);
+        }
+      );
     });
   });
 

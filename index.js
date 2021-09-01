@@ -21,10 +21,6 @@ app.use(errorhandler);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// if (process.env.NODE_ENV === "development") {
-// only use in development
-// }
-
 const jobs = require("./jobs");
 const router = require("./router");
 
