@@ -31,7 +31,7 @@ module.exports = app => {
       ProfilePictureURL: 1,
       TL_ID: 1,
     });
-    console.log(filteredUsers);
+    // console.log(filteredUsers);
 
     res.send(filteredUsers);
     console.log("search done");
@@ -50,7 +50,7 @@ module.exports = app => {
       Accends: 1,
       totalAccends: 1,
     });
-    console.log(selectedUser);
+    // console.log(selectedUser);
 
     res.send(selectedUser);
     console.log("user requested");
@@ -62,8 +62,8 @@ module.exports = app => {
     console.log(TL_ID);
 
     const selectedUser = await tlProfile.findOne(TL_ID, {});
-    console.log(selectedUser);
-    console.log(selectedUser.Accends);
+    // console.log(selectedUser);
+    // console.log(selectedUser.Accends);
 
     res.send(selectedUser);
     // console.log("user requested");
@@ -71,7 +71,7 @@ module.exports = app => {
   app.get("/", requireAuth, async (req, res, next) => {
     const data = await User.findOne(req.body.email).populate("following");
 
-    console.log(data);
+    // console.log(data);
 
     // app.post("/follow");
     // tlProfile.findById("6117cc189515bb98cab8cc84", (err, profile) => {

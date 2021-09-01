@@ -16,7 +16,7 @@ exports.signin = function (req, res, next) {
     token: tokenForUser(req.user),
     name: req.user.name,
   });
-  // console.log(User.name);
+  console.log(req.user.email + " logged in");
 };
 
 exports.signup = function (req, res, next) {
@@ -37,8 +37,9 @@ exports.signup = function (req, res, next) {
 
     // If a user with email does exist, return an error
     if (existingUser) {
-      return res.status(422).send({ error: "Email is in use" });
       console.log("Email is in use");
+      console.log("error email is in use");
+      return res.status(422).send({ error: "Email is in use" });
     }
 
     // If a user with email does NOT exist, create and save user record
@@ -46,6 +47,7 @@ exports.signup = function (req, res, next) {
       email: email,
       password: password,
     });
+    console.log("New user account created " + user.email);
 
     user.save(function (err) {
       if (err) {
