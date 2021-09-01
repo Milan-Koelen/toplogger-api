@@ -4,7 +4,13 @@ const bcrypt = require("bcrypt-nodejs");
 
 // define our model
 const userSchema = new Schema({
-  email: { type: String, unique: true, lowercase: true, required: true },
+  email: {
+    type: String,
+    unique: true,
+    lowercase: true,
+    required: true,
+    sparse: true,
+  },
   password: String,
   name: String,
   following: [{ type: mongoose.Types.ObjectId, ref: "tlProfile" }],
