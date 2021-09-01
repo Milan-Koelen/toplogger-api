@@ -48,6 +48,7 @@ module.exports = app => {
       ProfilePictureURL: 1,
       TL_ID: 1,
       Accends: 1,
+      totalAccends: 1,
     });
     console.log(selectedUser);
 
@@ -69,9 +70,10 @@ module.exports = app => {
   });
   app.get("/", requireAuth, async (req, res, next) => {
     const data = await User.findOne(req.body.email).populate("following");
-    // console.log(req.user);
+
     console.log(data);
 
+    // app.post("/follow");
     // tlProfile.findById("6117cc189515bb98cab8cc84", (err, profile) => {
     //   tlProfile.findByIdAndUpdate(req.user._id, {
     //     $push: { following: profile._id },
@@ -85,6 +87,7 @@ module.exports = app => {
       following: data.following,
       name: req.user.name,
       grade: req.user.TL_Grade,
+      TL_UID: req.user.TL_UID,
     });
   });
 };

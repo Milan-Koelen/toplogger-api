@@ -7,9 +7,7 @@ const userSchema = new Schema({
   email: { type: String, unique: true, lowercase: true, required: true },
   password: String,
   name: String,
-  following: [
-    { type: mongoose.Types.ObjectId, ref: "tlProfile", unique: true },
-  ],
+  following: [{ type: mongoose.Types.ObjectId, ref: "tlProfile" }],
   TL_UID: Number,
   TL_Grade: Number,
 });
