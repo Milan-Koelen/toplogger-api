@@ -35,6 +35,28 @@ module.exports = app => {
     });
   });
 
+  app.post("/unfollow", requireAuth, async (req, res, next) => {
+    const user = req.user;
+    console.log("user: " + user.email);
+    const unfollow_id = req.body.unfollow;
+    console.log("follow_id: " + unfollow_id);
+
+    tlProfile.findById(unfollow_id, (err, unfollow) => {
+      User.findByIdAndUpdate(
+        user._id,
+        {
+          $pull: { following: unfollow._id },
+        },
+        {},
+        (err, doc) => {
+          if (err) throw err;
+
+          res.send(doc);
+        }
+      );
+    });
+  });
+
   app.get("/search", async (req, res, next) => {
     console.log("Searching"); //CONSOLE LOG Searching
     console.log(req); //consolelog request
