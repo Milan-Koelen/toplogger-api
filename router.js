@@ -13,6 +13,36 @@ module.exports = app => {
   app.post("/signin", requireSignin, Authentication.signin);
   app.post("/signup", Authentication.signup);
 
+  app.post("/claim", requireAuth, async (req, res, next) => {
+    const user = req.user;
+    console.log("User: " + user.email);
+    const claimedAccount = req.body.TL_ID;
+    console.log("Account: " + claimedAccount);
+    const account = await tlProfile.findById(claimedAccount);
+    tlProfile.findById(claimedAccount, (err, claimedAccount) => {
+      console.log(account.Name);
+      console.log(account.Grade);
+
+      User.findByIdAndUpdate(
+        user._id,
+        {
+          $set: {
+            TL_ID: claimedAccount,
+            name: account.Name,
+            TL_Grade: account.Grade,
+          },
+        },
+        { upsert: true },
+        (err, doc) => {
+          if (err) throw err;
+
+          res.send(doc);
+        }
+      );
+      console.log("account claimed");
+    });
+  });
+
   app.post("/follow", requireAuth, async (req, res, next) => {
     const user = req.user;
     console.log("user: " + user.email);
