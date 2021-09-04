@@ -5,7 +5,7 @@ Data over user->gym relatie
 https://api.toplogger.nu/v1/users/7314852652.json
 
 Strength history
-https://api.toplogger.nu/v1/users/14345/strength_history.json?climb_type=boulder&offset=2
+https://api.toplogger.nu/v1/users/14345/strength_history.json?climb_type=boulder
 
 stats boulder
 https://api.toplogger.nu/v1/gyms/6/climbs/143686/stats.json
