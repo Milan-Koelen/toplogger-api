@@ -30,6 +30,7 @@ module.exports = app => {
             TL_ID: claimedAccount,
             name: account.Name,
             TL_Grade: account.Grade,
+            profilePicture: account.ProfilePictureURL,
           },
         },
         { upsert: true },
@@ -144,17 +145,10 @@ module.exports = app => {
   // });
   app.get("/", requireAuth, async (req, res, next) => {
     let data = await User.findById(req.user._id).populate("following").exec();
-
-    // console.log(data);
-
-    // app.post("/follow");
-    // tlProfile.findById("6117cc189515bb98cab8cc84", (err, profile) => {
-    //   tlProfile.findByIdAndUpdate(req.user._id, {
-    //     $push: { following: profile._id },
-    //   });
-    //   // req.user.following.push(profile);
-    //   req.user.save();
-    // });
+    let TL_data = await tlprofile
+      .findById(req.user._id)
+      .populate("following")
+      .exec();
 
     res.send({
       status_koe: "gemolken",
@@ -162,6 +156,7 @@ module.exports = app => {
       name: data.name,
       grade: data.TL_Grade,
       TL_UID: data.TL_UID,
+      TotalTops: TL_data.TotalTops,
     });
   });
 };

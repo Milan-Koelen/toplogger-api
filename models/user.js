@@ -12,6 +12,7 @@ const userSchema = new Schema({
     sparse: true,
   },
   password: String,
+  profilePicture: String,
   name: String,
   following: {
     type: [{ type: mongoose.Types.ObjectId, ref: "tlProfile" }],

@@ -11,7 +11,7 @@ stats boulder
 https://api.toplogger.nu/v1/gyms/6/climbs/143686/stats.json
 
 ascends per user, historisch!
-https://api.toplogger.nu/v1/ascends.json?json_params={"filters":{"used":true,"user":{"uid":3943496842},"climb":{"gym_id":6}}}&serialize_checks=true
+https://api.toplogger.nu/v1/ascends.json?json_params={%22filters%22:{%22used%22:true,%22user%22:{%22uid%22:3943496842}}}&serialize_checks=true
 
 List of all gyms
 https://api.toplogger.nu/v1/gyms.json
