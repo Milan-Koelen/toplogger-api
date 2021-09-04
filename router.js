@@ -100,18 +100,18 @@ module.exports = app => {
     console.log("user requested");
   });
 
-  app.get("/accends/:TL_ID", async (req, res, next) => {
-    console.log("user accends");
-    const TL_ID = req.params;
-    console.log(TL_ID);
+  // app.get("/accends/:TL_ID", async (req, res, next) => {
+  //   console.log("user accends");
+  //   const TL_ID = req.params;
+  //   console.log(TL_ID);
 
-    const selectedUser = await tlProfile.findOne(TL_ID, {});
-    // console.log(selectedUser);
-    // console.log(selectedUser.Accends);
+  //   const selectedUser = await tlProfile.findOne(TL_ID, {});
+  //   // console.log(selectedUser);
+  //   // console.log(selectedUser.Accends);
 
-    res.send(selectedUser);
-    // console.log("user requested");
-  });
+  //   res.send(selectedUser);
+  //   // console.log("user requested");
+  // });
   app.get("/", requireAuth, async (req, res, next) => {
     let data = await User.findById(req.user._id).populate("following").exec();
 

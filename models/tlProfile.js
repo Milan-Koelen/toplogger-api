@@ -10,6 +10,7 @@ const tlPofileSchema = new Schema({
   ProfilePictureURL: String,
   Grade: Number,
   Accends: Array,
+  TotalLogged: Number,
   // KnownGyms: Array,
 });
 
