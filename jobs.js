@@ -57,8 +57,8 @@ const init = async agenda => {
   await agenda.start();
   agenda.define("fetchGymLeaderboard", fetchGymLeaderboard);
   agenda.define("fetchUserAccends", fetchUserAccends);
-  await agenda.every("30 minutes", "fetchUserAccends");
-  await agenda.every("120 minutes", "fetchGymLeaderboard");
+  await agenda.every("120 minutes", "fetchUserAccends");
+  await agenda.every("300 minutes", "fetchGymLeaderboard");
 };
 
 module.exports = {
