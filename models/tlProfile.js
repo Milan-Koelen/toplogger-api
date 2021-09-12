@@ -11,7 +11,6 @@ const tlPofileSchema = new Schema({
   Grade: Number,
   Accends: Array,
   TotalTops: Number,
-  // KnownGyms: Array,
 });
 
 // create the model class

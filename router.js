@@ -32,11 +32,12 @@ module.exports = app => {
             TL_Grade: account.Grade,
             profilePicture: account.ProfilePictureURL,
           },
+          upsert: true,
         },
-        { upsert: true },
+
         (err, doc) => {
           if (err) throw err;
-
+          console.log(doc);
           res.send(doc);
         }
       );
@@ -123,7 +124,7 @@ module.exports = app => {
       ProfilePictureURL: 1,
       TL_ID: 1,
       Accends: 1,
-      totalAccends: 1,
+      TotalTops: 1,
     });
     // console.log(selectedUser);
 
@@ -144,17 +145,18 @@ module.exports = app => {
   //   // console.log("user requested");
   // });
   app.get("/", requireAuth, async (req, res, next) => {
-    let data = await User.findById(req.user._id).populate("following").exec();
-    let TL_data = await tlprofile
-      .findById(req.user._id)
-      .populate("following")
-      .exec();
+    const data = await User.findById(req.user._id).populate("following").exec();
+    const TL_data = await tlProfile.findById(req.user.TL_ID).populate().exec();
+    console.log("_+_+");
+    // console.log(data.TL_ID);
+    console.log("following", data.following);
 
     res.send({
       status_koe: "gemolken",
       following: data.following,
       name: data.name,
       grade: data.TL_Grade,
+      profilePicture: TL_data.ProfilePictureURL,
       TL_UID: data.TL_UID,
       TotalTops: TL_data.TotalTops,
     });

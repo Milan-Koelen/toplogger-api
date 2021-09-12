@@ -4,7 +4,8 @@
   "description": "API TOPLOGGER",
   "main": "index.js",
   "scripts": {
-    "start": "env-cmd -f .env node index.js",
+    "start": "env-cmd -f .env node --inspect index.js",
+    "dev": "env-cmd -f .env nodemon --inspect index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Milan en Nick",
@@ -24,5 +25,8 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }
