@@ -90,15 +90,13 @@ module.exports = app => {
   });
 
   app.get("/search", async (req, res, next) => {
-    console.log("Searching"); //CONSOLE LOG Searching
-    console.log(req); //consolelog request
+    console.log("Searching: " + req.Name); //CONSOLE LOG Searching
     const username = {
       Name: {
         $regex: req.query.name,
         $options: "i",
       },
     };
-    console.log(req.query.name);
     console.log(username);
 
     const filteredUsers = await tlProfile.find(username, {
@@ -125,10 +123,7 @@ module.exports = app => {
       Accends: 1,
       TotalTops: 1,
     });
-    // console.log(selectedUser);
-
     res.send(selectedUser);
-    console.log("user requested");
   });
 
   // app.get("/accends/:TL_ID", async (req, res, next) => {
