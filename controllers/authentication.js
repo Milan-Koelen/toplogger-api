@@ -15,7 +15,7 @@ exports.signin = async function (req, res, next) {
   const data = await User.findById(req.user._id)
     .populate("following", "TL_ID")
     .exec();
-  console.log(data);
+  // console.log(data);
   res.send({
     token: tokenForUser(req.user),
     following: data.following,
