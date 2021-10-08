@@ -20,7 +20,7 @@ module.exports = app => {
     console.log({ User: user.email, Account: claimedAccount });
     const account = await tlProfile.findById(claimedAccount);
     tlProfile.findById(claimedAccount, (err, claimedAccount) => {
-      console.log({account.Name);
+      console.log(account.Name);
       console.log(account.Grade);
 
       User.findByIdAndUpdate(
@@ -37,6 +37,7 @@ module.exports = app => {
 
         (err, doc) => {
           if (err) throw err;
+          console.log(doc);
           res.send(doc);
         }
       );
