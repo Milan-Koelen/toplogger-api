@@ -97,7 +97,6 @@ module.exports = app => {
         $options: "i",
       },
     };
-    console.log(username);
 
     const filteredUsers = await tlProfile.find(username, {
       Grade: 1,
@@ -105,10 +104,15 @@ module.exports = app => {
       ProfilePictureURL: 1,
       TL_ID: 1,
     });
-    // console.log(filteredUsers);
+    console.log(
+      "Search for " +
+        req.query.name +
+        " returned " +
+        filteredUsers.length +
+        " results."
+    );
 
     res.send(filteredUsers);
-    console.log("search done");
   });
 
   app.get("/user/:TL_ID", async (req, res, next) => {
