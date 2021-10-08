@@ -54,7 +54,7 @@ exports.signup = function (req, res, next) {
     const user = new User({
       email: email,
       password: password,
-      following: [],
+      following: [{}],
     });
 
     user.save(function (err) {
