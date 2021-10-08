@@ -15,12 +15,12 @@ module.exports = app => {
 
   app.post("/claim", requireAuth, async (req, res, next) => {
     const user = req.user;
-    console.log("User: " + user.email);
     const claimedAccount = req.body.TL_ID;
-    console.log("Account: " + claimedAccount);
+
+    console.log({ User: user.email, Account: claimedAccount });
     const account = await tlProfile.findById(claimedAccount);
     tlProfile.findById(claimedAccount, (err, claimedAccount) => {
-      console.log(account.Name);
+      console.log({account.Name);
       console.log(account.Grade);
 
       User.findByIdAndUpdate(
@@ -37,11 +37,10 @@ module.exports = app => {
 
         (err, doc) => {
           if (err) throw err;
-          console.log(doc);
           res.send(doc);
         }
       );
-      console.log("account claimed");
+      console.log(claimedAccount + " claimed");
     });
   });
 
@@ -114,9 +113,8 @@ module.exports = app => {
   });
 
   app.get("/user/:TL_ID", async (req, res, next) => {
-    console.log("user selected");
     const TL_ID = req.params;
-    console.log(TL_ID);
+    console.log("user selected: " + TL_ID);
 
     const selectedUser = await tlProfile.findOne(TL_ID, {
       Grade: 1,
@@ -147,9 +145,6 @@ module.exports = app => {
   app.get("/", requireAuth, async (req, res, next) => {
     const data = await User.findById(req.user._id).populate("following").exec();
     const TL_data = await tlProfile.findById(req.user.TL_ID).populate().exec();
-    console.log("_+_+");
-    // console.log(data.TL_ID);
-    console.log("following", data.following);
 
     res.send({
       status_koe: "gemolken",
