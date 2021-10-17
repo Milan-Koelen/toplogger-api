@@ -18,10 +18,7 @@ const userSchema = new Schema({
     type: [{ type: mongoose.Types.ObjectId, ref: "tlProfile" }],
     default: [],
   },
-  TL_ID: {
-    type: [{ type: mongoose.Types.ObjectId, ref: "tlProfile" }],
-    default: [{}],
-  },
+  TL_ID: { type: mongoose.Types.ObjectId, ref: "tlProfile" },
   TL_Grade: Number,
 });
 
