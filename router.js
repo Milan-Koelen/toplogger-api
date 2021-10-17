@@ -9,7 +9,7 @@ const User = require("./models/user");
 const tlProfile = require("./models/tlProfile");
 const { populate } = require("./models/user");
 
-module.exports = app => {
+module.exports = (app) => {
   app.post("/signin", requireSignin, Authentication.signin);
   app.post("/signup", Authentication.signup);
 
@@ -27,10 +27,8 @@ module.exports = app => {
         user._id,
         {
           $set: {
-            TL_ID: claimedAccount,
+            Profile: claimedAccount,
             name: account.Name,
-            TL_Grade: account.Grade,
-            profilePicture: account.ProfilePictureURL,
           },
           upsert: true,
         },
@@ -115,7 +113,7 @@ module.exports = app => {
     res.send(filteredUsers);
   });
 
-  app.get("/user/:TL_ID", async (req, res, next) => {
+  app.get("/user/:TL_ID", requireAuth, async (req, res) => {
     const TL_ID = req.params;
     console.log("user selected: " + TL_ID);
 
@@ -130,6 +128,24 @@ module.exports = app => {
     res.send(selectedUser);
   });
 
+  app.get("/user", requireAuth, async (req, res) => {
+    const user = await User.findById(req.user._id).exec();
+    let profile;
+    if (user.Profile) {
+      profile = await tlProfile.findById(user.Profile).populate({
+        path: "Accends",
+        populate: {
+          path: "climb",
+        },
+      });
+    }
+
+    res.send({
+      name: user.name,
+      Profile: profile,
+    });
+  });
+
   // app.get("/accends/:TL_ID", async (req, res, next) => {
   //   console.log("user accends");
   //   const TL_ID = req.params;
@@ -142,18 +158,11 @@ module.exports = app => {
   //   res.send(selectedUser);
   //   // console.log("user requested");
   // });
-  app.get("/", requireAuth, async (req, res, next) => {
-    const data = await User.findById(req.user._id).populate("following").exec();
-    const TL_data = await tlProfile.findById(req.user.TL_ID).populate().exec();
+  app.get("/following", requireAuth, async (req, res, next) => {
+    const data = await User.findById(req.user._id)
+      .populate("following", "ProfilePictureURL Name TL_ID Grade")
+      .exec();
 
-    res.send({
-      status_koe: "gemolken",
-      following: data.following,
-      name: data.name,
-      grade: data.TL_Grade,
-      profilePicture: TL_data.ProfilePictureURL,
-      TL_UID: data.TL_UID,
-      TotalTops: TL_data.TotalTops,
-    });
+    res.send(data.following);
   });
 };

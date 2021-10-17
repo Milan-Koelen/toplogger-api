@@ -9,7 +9,15 @@ const tlPofileSchema = new Schema({
   Gender: String,
   ProfilePictureURL: String,
   Grade: Number,
-  Accends: Array,
+  Accends: [
+    {
+      id: Number,
+      user_id: Number,
+      climb_id: Number,
+      climb: { type: mongoose.Types.ObjectId, ref: "Boulder" },
+      date_logged: Date,
+    },
+  ],
   TotalTops: Number,
 });
 

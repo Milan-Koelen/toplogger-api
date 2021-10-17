@@ -12,18 +12,9 @@ function tokenForUser(user) {
 exports.signin = async function (req, res, next) {
   // User has already had their email and password
   // We just need to give them a token
-  const data = await User.findById(req.user._id)
-    .populate("following", "TL_ID")
-    .exec();
   // console.log(data);
   res.send({
     token: tokenForUser(req.user),
-    following: data.following,
-    name: data.name,
-    grade: data.TL_Grade,
-    profilePicture: data.ProfilePictureURL,
-    TL_UID: data.TL_UID,
-    TotalTops: data.TL_ID.TotalTops,
   });
   console.log(req.user.email + " logged in");
 };
@@ -65,10 +56,6 @@ exports.signup = function (req, res, next) {
       // Respond to request indicating the user was created
       res.json({
         token: tokenForUser(user),
-        following: user.following,
-        name: user.name,
-        grade: user.TL_Grade,
-        TL_UID: user.TL_UID,
       });
     });
   });

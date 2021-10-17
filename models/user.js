@@ -12,14 +12,12 @@ const userSchema = new Schema({
     sparse: true,
   },
   password: String,
-  profilePicture: String,
   name: String,
   following: {
     type: [{ type: mongoose.Types.ObjectId, ref: "tlProfile" }],
     default: [],
   },
-  TL_ID: { type: mongoose.Types.ObjectId, ref: "tlProfile" },
-  TL_Grade: Number,
+  Profile: { type: mongoose.Types.ObjectId, ref: "tlProfile" },
 });
 
 // on save hook, encrypt password
