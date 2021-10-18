@@ -4,7 +4,7 @@ const tlProfile = require("./models/tlProfile");
 const Boulder = require("./models/Boulder");
 const User = require("./models/user");
 
-const fetchGymLeaderboard = async (job) => {
+const fetchGymLeaderboard = async job => {
   const url =
     "https://api.toplogger.nu/v1/gyms/6/ranked_users.json?climbs_type=boulders&ranking_type=grade";
 
@@ -13,7 +13,7 @@ const fetchGymLeaderboard = async (job) => {
   const data = await apiHelper.get(url);
 
   await tlProfile.bulkWrite(
-    data.map((climber) => ({
+    data.map(climber => ({
       updateOne: {
         filter: { TL_ID: climber.id },
         update: {
@@ -34,7 +34,7 @@ const fetchGymLeaderboard = async (job) => {
   console.log("[JOB] Leaderboards fetched");
 };
 
-const fetchUserAccends = async (job) => {
+const fetchUserAccends = async job => {
   const allUsers = job.attrs.data?.allUsers ?? false;
 
   let climbers = [];
@@ -56,7 +56,7 @@ const fetchUserAccends = async (job) => {
       console.log(`[JOB] Updating accends ${idx}/${climbers.length}`);
 
     const accendsObjects = await Promise.all(
-      accends.map(async (accend) => {
+      accends.map(async accend => {
         try {
           const climb = await Boulder.findOne({ id: accend.climb_id }).exec();
 
@@ -86,16 +86,16 @@ const fetchUserAccends = async (job) => {
   console.log("[JOB] Accends updated");
 };
 
-const findUsedProfiles = async (job) => {
+const findUsedProfiles = async job => {
   const users = await User.find().exec();
 
   const ids = users
-    .filter((user) => !!user.Profile)
+    .filter(user => !!user.Profile)
     .reduce((list, user) => {
       return [
         ...list,
         user.Profile.toString(),
-        ...user.following.map((following) => following.toString()),
+        ...user.following.map(following => following.toString()),
       ];
     }, []);
 
@@ -108,13 +108,13 @@ const findClimbedRoutes = async () => {
   const usedProfiles = await findUsedProfiles();
 
   const ids = usedProfiles.reduce((list, user) => {
-    return [...list, ...user.Accends.map((accend) => accend.climb_id)];
+    return [...list, ...user.Accends.map(accend => accend.climb_id)];
   }, []);
 
   return await tlProfile.find({ _id: { $in: ids } }).exec();
 };
 
-const fetchBoulders = async (job) => {
+const fetchBoulders = async job => {
   const recents = job.attrs.data.recents ?? true;
 
   const url = `https://api.toplogger.nu/v1/gyms/6/climbs.json?json_params=${JSON.stringify(
@@ -132,7 +132,7 @@ const fetchBoulders = async (job) => {
   console.log(`[JOB] Writing ${climbs.length} boulders to db`);
 
   await Boulder.bulkWrite(
-    climbs.map((climb) => ({
+    climbs.map(climb => ({
       updateOne: {
         filter: { id: climb.id },
         update: {
@@ -155,7 +155,7 @@ const fetchBoulders = async (job) => {
   return;
 };
 
-const withLogging = (func) => {
+const withLogging = func => {
   return (...atrs) => {
     try {
       func(...atrs);
@@ -166,7 +166,7 @@ const withLogging = (func) => {
 };
 
 // Init agenda and register jobs
-const init = async (agenda) => {
+const init = async agenda => {
   await agenda.start();
   agenda.define("fetchGymLeaderboard", withLogging(fetchGymLeaderboard));
   agenda.define("fetchUserAccends", withLogging(fetchUserAccends));
@@ -175,10 +175,10 @@ const init = async (agenda) => {
   await agenda.every("30 minutes", "fetchUserAccends", { allUsers: false });
   await agenda.every("1 day", "fetchUserAccends", { allUsers: true });
   await agenda.every("2 hours", "fetchGymLeaderboard");
-  await agenda.every("30 minutes", "fetchBoulders");
+  await agenda.every("30 minutes", "fetchBoulders", { recents: true });
 
-  // await agenda.now("fetchUserAccends", { allUsers: true });
-  // await agenda.now("fetchBoulders", { recents: false });
+  await agenda.now("fetchUserAccends", { allUsers: true });
+  await agenda.now("fetchBoulders", { recents: false });
 };
 
 module.exports = {
