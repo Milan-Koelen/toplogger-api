@@ -4,6 +4,8 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const LocalStrategy = require("passport-local");
 
+const JWT_SECRET = process.env.JWT_SECRET;
+
 // create local strategy
 const localOptions = {
   usernameField: "email",
@@ -43,7 +45,7 @@ const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
 // setup options for JWT strategy
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromHeader("authorization"),
-  secretOrKey: process.env["JWT_SECRET"],
+  secretOrKey: JWT_SECRET,
 };
 
 // create JWT strategy
@@ -51,8 +53,10 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
   // see if the user id in the payload exits in our database
   // if it does, call 'done' with that
   // otherwise, call 'done' without a user object
-  User.find({ id: payload.sub }, (err, user) => {
+  // User.find({ _id: payload.sub }, (err, user) => {
+  User.findById(payload.sub, (err, user) => {
     if (err) {
+      console.error(err);
       return done(err, false);
     }
 

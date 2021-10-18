@@ -9,8 +9,16 @@ const tlPofileSchema = new Schema({
   Gender: String,
   ProfilePictureURL: String,
   Grade: Number,
-  Accends: Array,
-  // KnownGyms: Array,
+  Accends: [
+    {
+      id: Number,
+      user_id: Number,
+      climb_id: Number,
+      climb: { type: mongoose.Types.ObjectId, ref: "Boulder" },
+      date_logged: Date,
+    },
+  ],
+  TotalTops: Number,
 });
 
 // create the model class

@@ -9,10 +9,14 @@ function tokenForUser(user) {
   );
 }
 
-exports.signin = function (req, res, next) {
+exports.signin = async function (req, res, next) {
   // User has already had their email and password
   // We just need to give them a token
-  res.send({ token: tokenForUser(req.user) });
+  // console.log(data);
+  res.send({
+    token: tokenForUser(req.user),
+  });
+  console.log(req.user.email + " logged in");
 };
 
 exports.signup = function (req, res, next) {
@@ -33,6 +37,7 @@ exports.signup = function (req, res, next) {
 
     // If a user with email does exist, return an error
     if (existingUser) {
+      console.log("Email is in use");
       return res.status(422).send({ error: "Email is in use" });
     }
 
@@ -46,9 +51,12 @@ exports.signup = function (req, res, next) {
       if (err) {
         return next(err);
       }
+      console.log("New user account created " + user.email);
 
       // Respond to request indicating the user was created
-      res.json({ token: tokenForUser(user) });
+      res.json({
+        token: tokenForUser(user),
+      });
     });
   });
 };
