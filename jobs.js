@@ -115,7 +115,7 @@ const findClimbedRoutes = async () => {
 };
 
 const fetchBoulders = async job => {
-  const recents = job.attrs.data.recents ?? true;
+  const recents = job.attrs.data?.recents ?? true;
 
   const url = `https://api.toplogger.nu/v1/gyms/6/climbs.json?json_params=${JSON.stringify(
     recents
